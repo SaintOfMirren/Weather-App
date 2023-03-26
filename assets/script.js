@@ -5,6 +5,8 @@ const currentWeather = document.getElementById("current-weather");
 const forecast = document.getElementById("forecast");
 let cities = JSON.parse(localStorage.getItem('cities')) || [];
 
+
+// set variables to append elements to the page once a city is searched
 const searchHistoryElement = document.getElementById('search-history');
 const searchHistoryItems = cities.map(city => {
   const searchHistoryItem = `<li class="list-group-item">${city}</li>`;
@@ -15,6 +17,7 @@ searchHistoryElement.innerHTML = `
   <ul class="list-group bg-dark text-light">${searchHistoryItems.join('')}</ul>
 `;
 
+// set on click so searched history cities will again pull up current data
 searchHistoryElement.addEventListener('click', event => {
   if (event.target.tagName === 'LI') {
     const city = event.target.innerText;
@@ -22,6 +25,7 @@ searchHistoryElement.addEventListener('click', event => {
   }
 });
 
+// set submit search box to enter new city searches
 searchForm.addEventListener("submit", (event) => {
   event.preventDefault();
   var city = searchInput.value.trim();
@@ -30,6 +34,7 @@ searchForm.addEventListener("submit", (event) => {
   }
 });
 
+// function to pull api data from openweathermap
 async function getWeatherData(city) {
   var response = await fetch(
     `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${API_KEY}`
@@ -43,6 +48,7 @@ async function getWeatherData(city) {
   console.log(currentData);
   displayWeather(currentData, data.list);
   
+  // statement to add searched city to local storage if it doesn't already exist
   if (!cities.includes(city)) {
     cities.push(city);
     localStorage.setItem('cities', JSON.stringify(cities));
@@ -51,6 +57,7 @@ async function getWeatherData(city) {
   }
 }
 
+// function to display the weather from the pulled api data
 function displayWeather(currentData, forecastData) {
   currentWeather.innerHTML = `
           <h2>Current Weather in ${currentData.city.name} for ${new Date(currentData.list[0].dt_txt).toLocaleDateString()}</h2>
@@ -60,7 +67,7 @@ function displayWeather(currentData, forecastData) {
           <p>Wind Speed: ${currentData.list[0].wind.speed} m/s</p>
         `;
 
-
+// displaying the next 5 days forecast from the same data pulled
   forecast.innerHTML = `
           <h2>5-Day Weather Forecast</h2>
           <div class="forecast-cards d-flex">
