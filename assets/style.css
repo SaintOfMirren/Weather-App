@@ -1,0 +1,16 @@
+.forecast-cards {
+    display: flex;
+    justify-content: space-between;
+    color: azure;
+  }
+
+  .card {
+    border: 1px solid black;
+    background-color: cornflowerblue;
+    color: black;
+  }
+
+  .list-group-item {
+    background-color: #343a40;
+    color: #f8f9fa;
+  }
